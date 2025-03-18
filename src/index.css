@@ -6,7 +6,8 @@ body {
   margin: 0;
   color-scheme: light dark;
   background-color: #242424;
-  font-family: Karla, sans-serif;
+  font-family: "Hanken Grotesk", Arial, sans-serif;
+  color: #D9D9D9;
 }
 
 body,
@@ -29,8 +30,24 @@ body,
   justify-content: center;
 }
 
+.fl-wrap {
+  flex-wrap: wrap;
+}
+
+.no-wrap {
+  flex-wrap: nowrap;
+}
+
 .gap-1 {
   gap: 1rem;
+}
+
+.mb-1 {
+  margin-block: 1rem;
+}
+
+.mt-3 {
+  margin-top: 3rem;
 }
 
 .flex-grow-1 {
@@ -45,6 +62,22 @@ body,
 
 .centered {
   text-align: center;
+}
+
+.p-2 {
+  padding: 2rem;
+}
+
+.bg-green {
+  background-color: #10a95b;
+}
+
+.bg-red {
+  background-color: #ba2a2a;
+}
+
+.bg-purple {
+  background-color: #7a5ea7;
 }
 
 .btn-orange {
@@ -65,10 +98,18 @@ body,
   }
 }
 
+.btn-green {
+  background-color: #10a95b;
+}
+
+.btn-red {
+  background-color: #ec5d49;
+}
+
 .mat-button.btn-primary {
   background-color: #646cff;
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   padding: 0.5rem 2rem;
   text-transform: capitalize;
 
