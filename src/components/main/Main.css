@@ -1,20 +1,78 @@
 main {
-    /* margin: 3rem;
-    padding: 2rem;
-    border-radius: 10px;
-    color: #213547;
-    background-color: #ffffff;
-    justify-content: space-around;
+  max-width: 600px;
 
-    max-width: 500px;
-    height: 500px;
+  .game-status {
+    padding: .5rem;
+    color: #F9F4DA;
+    border-radius: 4px;
+    margin-block: 1rem;
 
-    .button-container {
-        margin: 1rem 2rem 2rem;
+    h2 {
+      margin: .5rem;
+    }
+    p {
+      margin: .5rem;
+    }
+  }
 
-        button {
-            display: block;
-            margin: 0 auto;
-        }
-    } */
+  .language-container {
+    max-width: 600px;
+
+    .language-item {
+      padding: .5rem 1rem;
+      margin: .5rem .4rem 0 0;
+      border-radius: 4px;
+      position: relative;
+
+      /* Dimmed overlay with skull on "lost" languages */
+      &.lost:before {
+        content: "💀";
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        font-size: 1rem;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+    }
+  }
+
+  .word-container {
+    padding: 2rem 0;
+
+    .letter {
+      background-color: #323232;
+      border-bottom: 1px solid #F9F4DA;
+      font-size: 1.25rem;
+      margin-right: .3rem;
+      padding: 1rem 1.2rem;
+      user-select: none;
+      text-transform: uppercase;
+      width: 3.2rem;
+      height: 3.8rem;
+    }
+  }
+
+  .keyboard-container {
+    max-width: 600px;
+
+    .alphabet-key {
+      font-size: 1.25rem;
+      margin-right: .3rem;
+      margin-top: .3rem;
+      padding: 1rem 1.2rem;
+      cursor: pointer;
+      /* background-color: #FCBA29;
+      border: 1px solid #D7D7D7;
+      border-radius: 3px; */
+    }
+  }
+
+  .button-container {
+    margin-top: 2rem;
+  }
 }
