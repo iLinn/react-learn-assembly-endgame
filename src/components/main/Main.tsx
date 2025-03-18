@@ -15,7 +15,7 @@ function MainContent() {
   // Static values
   const GAME_STATES = {
     success: 'bg-green',
-    fail: 'bg-red',
+    lost: 'bg-red',
     start: 'bg-purple',
     continue: 'continue',
   };
@@ -28,8 +28,11 @@ function MainContent() {
     .map(item => item.name);
 
   const isGameStarted = userGuess?.length > 0;
-  const isGameEnded = wrongGuessCount >= LANGUAGES?.length - 1;
+  const isGameLost = wrongGuessCount >= LANGUAGES?.length - 1;
   const isGameSuccessful = currentWord.toUpperCase().split('').every(letter => userGuess.includes(letter));
+  const isGameOver = isGameLost || isGameSuccessful;
+  const lastGuessedLetter = userGuess[userGuess.length - 1] || '';
+  const isLastGuessCorrect = currentWord.includes(lastGuessedLetter);
 
   // Page elements
   const languageItems = LANGUAGES.map((item, index) => {
@@ -82,15 +85,15 @@ function MainContent() {
   })
 
   const getGameState = () => {
-    if (isGameStarted && !isGameEnded && isGameSuccessful) {
+    if (isGameStarted && !isGameLost && isGameSuccessful) {
       return GAME_STATES.success;
     }
 
-    if (isGameStarted && isGameEnded && !isGameSuccessful) {
-      return GAME_STATES.fail;
+    if (isGameStarted && isGameLost && !isGameSuccessful) {
+      return GAME_STATES.lost;
     }
 
-    if (isGameStarted && !wrongGuessCount) {
+    if (isGameStarted && isLastGuessCorrect) {
       return GAME_STATES.continue;
     }
 
@@ -110,17 +113,17 @@ function MainContent() {
             <p>Well done! 🎉</p>
           </section>
         );
-      case (GAME_STATES.fail):
+      case (GAME_STATES.lost):
         return (
-          <section className={`centered game-status mb-1 ${GAME_STATES.fail}`}>
+          <section className={`centered game-status mb-1 ${GAME_STATES.lost}`}>
             <h2>Game over</h2>
             <p>You lose! Better start learning Assembly 😢</p>
           </section>
         );
       case (GAME_STATES.start):
         return (
-          <section className={`centered game-status mb-1 ${GAME_STATES.start}`}>
-            <h2>"Farewell {lostLanguages.join(' & ')}" 🫡</h2>
+          <section className={`centered game-status mb-1 border-dashed ${GAME_STATES.start}`}>
+            <h2 className='italic'>"Farewell {lostLanguages.join(' & ')}" 🫡</h2>
           </section>
         );
       case (GAME_STATES.continue):
@@ -142,7 +145,7 @@ function MainContent() {
 
   function handleKeyboardGuess(letter: string) {
     console.log('click', letter)
-    if (isGameEnded) return;
+    if (isGameOver) return;
 
     setUserGuess(prev => {
       const updatedArray = [...prev];
@@ -164,21 +167,24 @@ function MainContent() {
         <>
           {getGameStatusMessage()}
         </>
-        <section className='flex-row fl-wrap language-container justify-center mb-1'>
+        <section className='flex-row flex-wrap language-container justify-center mb-1'>
           {languageItems}
         </section>
+
         <section className='flex-row no-wrap word-container justify-center mb-1'>
           {currentWordElements}
         </section>
-        <section className='flex-row fl-wrap keyboard-container justify-center mb-1'>
+
+        <section className='flex-row flex-wrap keyboard-container justify-center mb-1'>
           {alphabetElements}
         </section>
-        <>{ (isGameEnded || isGameSuccessful) && 
+
+        {(isGameLost || isGameSuccessful) && 
           <section className='flex-row button-container justify-center mt-3'>
             <button onClick={handleNewGame}
               className="mat-button btn-primary">New Game</button>
           </section>
-        }</>
+        }
       </main>
       <Footer />
     </div>

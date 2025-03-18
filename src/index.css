@@ -30,7 +30,7 @@ body,
   justify-content: center;
 }
 
-.fl-wrap {
+.flex-wrap {
   flex-wrap: wrap;
 }
 
@@ -66,6 +66,15 @@ body,
 
 .p-2 {
   padding: 2rem;
+}
+
+.border-dashed {
+  border: 1px dashed #323232;
+}
+
+.italic {
+  font-style: italic;
+  font-weight: 400;
 }
 
 .bg-green {
