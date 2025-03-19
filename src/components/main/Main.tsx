@@ -8,7 +8,7 @@ import { getRandomWord } from '../../service/utils';
 
 function MainContent() {
   // State values
-  const [ currentWord, setCurrentWord ] = useState(getRandomWord());
+  const [ currentWord, setCurrentWord ] = useState(() => getRandomWord().toUpperCase());
   const [ userGuess, setUserGuess ] = useState<string[]>([]);
 
   // Static values
@@ -21,14 +21,14 @@ function MainContent() {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
   // Derived values
-  const wrongGuessCount = userGuess.filter(letter => !currentWord.toUpperCase().includes(letter)).length;
+  const wrongGuessCount = userGuess.filter(letter => !currentWord.includes(letter)).length;
   const lostLanguages = LANGUAGES
     .filter((item, index) => wrongGuessCount > index)
     .map(item => item.name);
 
   const isGameStarted = userGuess?.length > 0;
   const isGameLost = wrongGuessCount >= LANGUAGES?.length - 1;
-  const isGameSuccessful = currentWord.toUpperCase().split('').every(letter => userGuess.includes(letter));
+  const isGameSuccessful = currentWord.split('').every(letter => userGuess.includes(letter));
   const isGameOver = isGameLost || isGameSuccessful;
   const lastGuessedLetter = userGuess[userGuess.length - 1] || '';
   const isLastGuessCorrect = currentWord.includes(lastGuessedLetter);
@@ -51,19 +51,19 @@ function MainContent() {
     )
   });
 
-  const currentWordElements = currentWord.toUpperCase().split('').map((letter, index) => {
+  const currentWordElements = currentWord.split('').map((letter, index) => {
     return (
       <span 
         key={`${index}-${letter}`}
         className="letter">
-          {userGuess.includes(letter) ? letter : ''}
+          {(userGuess.includes(letter) || (isGameLost)) ? letter : ''}
       </span>
     );
   })
 
   const alphabetElements = alphabet.toUpperCase().split('').map((letter, index) => {
     function getLetterButtonClass(letter: string): string {
-      if (userGuess.includes(letter) && currentWord.toUpperCase().includes(letter)) {
+      if (userGuess.includes(letter) && currentWord.includes(letter)) {
         return 'btn-green';
       }
   
@@ -107,6 +107,7 @@ function MainContent() {
   };
 
   const getGameStatusMessage = (gameStatus: string) => {
+    console.log(gameStatus)
     switch (gameStatus) {
       case (GAME_STATES.success):
         return (
@@ -159,7 +160,7 @@ function MainContent() {
 
   function handleNewGame() {
     setUserGuess([]);
-    setCurrentWord(getRandomWord());
+    setCurrentWord(() => getRandomWord().toUpperCase());
   }
 
   return (
@@ -191,7 +192,7 @@ function MainContent() {
                   `Sorry, the letter ${lastGuessedLetter} is not in the word.`)
               }
             </p>
-            <p>Current word: {currentWord.toUpperCase().split('').map(letter => 
+            <p>Current word: {currentWord.split('').map(letter => 
             userGuess.includes(letter) ? letter + '.' : 'blank.')
             .join(' ')}</p>
         </section>
