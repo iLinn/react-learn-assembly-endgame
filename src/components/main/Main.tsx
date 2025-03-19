@@ -16,9 +16,9 @@ function MainContent() {
   const GAME_STATES = {
     success: 'bg-green',
     lost: 'bg-red',
-    start: 'bg-purple',
-    continue: 'continue',
-  };
+    start: 'bg-purple border-dashed',
+    continue: 'bg-purple',
+  } as const;
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
   // Derived values
@@ -78,6 +78,9 @@ function MainContent() {
     return (
       <button onClick={() => handleKeyboardGuess(letter)}
         key={`${index}-${letter}`}
+        disabled={isGameOver}
+        aria-disabled={userGuess.includes(letter)}
+        aria-label={`Letter ${letter}`}
         className={`alphabet-key mat-button ${getLetterButtonClass(letter)}`}>
         {letter}
       </button>
@@ -104,41 +107,41 @@ function MainContent() {
     return '';
   };
 
-  const getGameStatusMessage = () => {
-    switch (getGameState()) {
+  const getGameStatusMessage = (gameStatus: string) => {
+    switch (gameStatus) {
       case (GAME_STATES.success):
         return (
-          <section className={`centered game-status mb-1 ${GAME_STATES.success}`}>
+          <>
             <h2>You win!</h2>
             <p>Well done! 🎉</p>
-          </section>
+          </>
         );
       case (GAME_STATES.lost):
         return (
-          <section className={`centered game-status mb-1 ${GAME_STATES.lost}`}>
+          <>
             <h2>Game over</h2>
             <p>You lose! Better start learning Assembly 😢</p>
-          </section>
+          </>
         );
       case (GAME_STATES.start):
         return (
-          <section className={`centered game-status mb-1 border-dashed ${GAME_STATES.start}`}>
+          <>
             <h2 className='italic'>"Farewell {lostLanguages.join(' & ')}" 🫡</h2>
-          </section>
+          </>
         );
       case (GAME_STATES.continue):
         return (
-          <section className={`centered game-status mb-1 ${GAME_STATES.start}`}>
+          <>
             <h2>Keep going!</h2>
             <p>You're doing great 👍</p>
-          </section>
+          </>
         );
       default: 
         return (
-          <section className='centered game-status mb-1'>
+          <>
             <h2>Start your game!</h2>
             <p>Choose wisely</p>
-          </section>
+          </>
         );
     }
   }
@@ -164,9 +167,12 @@ function MainContent() {
     <div className='flex-column p-2'>
       <Header />
       <main className='full-height'>
-        <>
-          {getGameStatusMessage()}
-        </>
+        <section 
+            className={`centered game-status mb-1 ${getGameState()}`}
+            aria-live="polite"
+            role="status">
+          {getGameStatusMessage(getGameState())}
+        </section>
         <section className='flex-row flex-wrap language-container justify-center mb-1'>
           {languageItems}
         </section>
@@ -174,6 +180,17 @@ function MainContent() {
         <section className='flex-row no-wrap word-container justify-center mb-1'>
           {currentWordElements}
         </section>
+
+        {/* Accessibility section for Screen Readers */}
+        <section 
+          className="sr-only"
+          aria-live="polite"
+          role="status">
+            <p>Current word: {currentWord.toUpperCase().split('').map(letter => 
+            userGuess.includes(letter) ? letter + '.' : 'blank.')
+            .join(' ')}</p>
+        </section>
+        {/* End of accessibility section */}
 
         <section className='flex-row flex-wrap keyboard-container justify-center mb-1'>
           {alphabetElements}

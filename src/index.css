@@ -168,6 +168,11 @@ body,
   box-shadow: 0px 0px 0px 3px #646cff;
 }
 
+.mat-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .sr-only {
   border: 0;
   width: 1px;
