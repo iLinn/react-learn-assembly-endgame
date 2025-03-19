@@ -5,6 +5,7 @@ import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import { LANGUAGES } from '../../shared/language-data';
 import { getRandomWord } from '../../service/utils';
+import Confetti from 'react-confetti';
 
 function MainContent() {
   // State values
@@ -21,6 +22,9 @@ function MainContent() {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
   // Derived values
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
   const wrongGuessCount = userGuess.filter(letter => !currentWord.includes(letter)).length;
   const lostLanguages = LANGUAGES
     .filter((item, index) => wrongGuessCount > index)
@@ -208,6 +212,13 @@ function MainContent() {
               className="mat-button btn-primary">New Game</button>
           </section>
         }
+
+        {isGameSuccessful && <Confetti
+            width={width}
+            height={height}
+            recycle={false}
+            numberOfPieces={1000}
+        />}
       </main>
       <Footer />
     </div>
