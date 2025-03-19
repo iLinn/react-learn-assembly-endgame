@@ -27,7 +27,7 @@ function MainContent() {
 
   const wrongGuessCount = userGuess.filter(letter => !currentWord.includes(letter)).length;
   const lostLanguages = LANGUAGES
-    .filter((item, index) => wrongGuessCount > index)
+    .filter((_item, index) => wrongGuessCount > index)
     .map(item => item.name);
 
   const isGameStarted = userGuess?.length > 0;
