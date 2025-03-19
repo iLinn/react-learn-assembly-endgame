@@ -1,17 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import './Main.css';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import { LANGUAGES } from '../../shared/language-data';
+import { getRandomWord } from '../../service/utils';
 
 function MainContent() {
   // State values
-  const [ currentWord, setCurrentWord ] = useState('REACT');
+  const [ currentWord, setCurrentWord ] = useState(getRandomWord());
   const [ userGuess, setUserGuess ] = useState<string[]>([]);
 
-  console.log('USER GUESS', userGuess);
-  
   // Static values
   const GAME_STATES = {
     success: 'bg-green',
@@ -22,7 +21,7 @@ function MainContent() {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
   // Derived values
-  const wrongGuessCount = userGuess.filter(letter => !currentWord.includes(letter)).length;
+  const wrongGuessCount = userGuess.filter(letter => !currentWord.toUpperCase().includes(letter)).length;
   const lostLanguages = LANGUAGES
     .filter((item, index) => wrongGuessCount > index)
     .map(item => item.name);
@@ -147,7 +146,6 @@ function MainContent() {
   }
 
   function handleKeyboardGuess(letter: string) {
-    console.log('click', letter)
     if (isGameOver) return;
 
     setUserGuess(prev => {
@@ -161,6 +159,7 @@ function MainContent() {
 
   function handleNewGame() {
     setUserGuess([]);
+    setCurrentWord(getRandomWord());
   }
 
   return (

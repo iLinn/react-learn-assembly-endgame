@@ -16,6 +16,17 @@ export function getFarewellText(languages: string[]): string {
       `${language} has left the building`
   ];
 
-  const randomIndex = Math.floor(Math.random() * options.length);
+  const randomIndex = getRandomIndex(options);
   return options[randomIndex];
+}
+
+import { WORDS } from '../shared/words';
+
+export function getRandomWord(): string {
+  const randomIndex = getRandomIndex(WORDS);
+  return WORDS[randomIndex];
+}
+
+function getRandomIndex(array: unknown[]): number {
+  return Math.floor(Math.random() * array.length);
 }
