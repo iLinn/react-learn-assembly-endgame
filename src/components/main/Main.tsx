@@ -186,11 +186,17 @@ function MainContent() {
           className="sr-only"
           aria-live="polite"
           role="status">
+            <p>
+              {lastGuessedLetter && (isLastGuessCorrect ? 
+                  `Correct! The letter ${lastGuessedLetter} is in the word.` : 
+                  `Sorry, the letter ${lastGuessedLetter} is not in the word.`)
+              }
+            </p>
             <p>Current word: {currentWord.toUpperCase().split('').map(letter => 
             userGuess.includes(letter) ? letter + '.' : 'blank.')
             .join(' ')}</p>
         </section>
-        {/* End of accessibility section */}
+        {/* End of a11y section */}
 
         <section className='flex-row flex-wrap keyboard-container justify-center mb-1'>
           {alphabetElements}
